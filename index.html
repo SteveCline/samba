@@ -11,6 +11,9 @@
 <style>  
 	body { margin: 0; padding: 0; font-family: Arial,sans-serif; }
     h1 { font-weight: normal; font-size: 24px; }
+    a {
+        color: #fff;
+    }
 	#map { position: absolute; top: 46px; bottom: 0; width: 100%; }
     #banner {
         position: relative;
@@ -200,7 +203,7 @@
 <body>
 
 <header id="banner">
-    <img src="assets/logo.svg" style="height:38px;border:0;margin-top:4px;margin-left:4px;">
+    <a href="http://sambabiker.com/samba/"><img src="assets/logo.svg" style="height:38px;border:0;margin-top:4px;margin-left:4px;"></a>
     <div style="color:#fff;position:absolute;display:inline-block;font-size:40px;padding:2px 10px;">Trails</div>
     <div id="menu-icon">
         <div class="burger-line-1"></div>
@@ -252,6 +255,19 @@
     <div class="accordion">
         <div class="grid-container">
             <div class="grid-item head">
+                Swatara State Park
+            </div>
+            <div class="grid-item go">
+                Go <svg height="12" width="8"><polyline points="2,2 6,6 2,10" stroke="#f47b20" stroke-width="2" fill="none" stroke-linecap="round" /></svg>
+            </div>
+        </div>
+        <div class="grid-content">
+            Totaling 8 miles, Swatara State Park's mountain bike trails are a system of 6 looped trails that twist through the woods and hills and are generally considered a good place for introductory skills. These trails are no longer offically maintained by SAMBA, but ties remain close.
+        </div>
+    </div>   
+    <div class="accordion">
+        <div class="grid-container">
+            <div class="grid-item head">
                 Governor Dick
             </div>
             <div class="grid-item go">
@@ -290,12 +306,15 @@
     </div>
     
     <h1>Ride Schedule</h1>
-    <div id="ride-schedule"></div>
-    
+    <p>*Due to COVID-19 group rides are temporarily suspended. When group rides return, they will be posted here.</p>
+    <!--<div id="ride-schedule"></div>-->
+    <h1>Sponsors</h1>
+    <div id="sponsor-list"></div>
     <h1>Mission</h1>
-    <p>Susquehanna Area Mountain Bike Association's mission is to advocate for mountain bike trail access by creating positive relationships and partnerships with area land owners and agencies. We provide information, education and support to Central Pennsylvania mountain bike riders.</p>
+    <p>Susquehanna Area Mountain Bike Association's mission is to advocate for mountain bike trail access by creating positive relationships and partnerships with area land owners and organizations. We provide information, education and support to Central Pennsylvania mountain bike riders.</p>
+    <p style="text-align: center;margin: 32px 0;"><a href="http://sambabiker.com/samba/donate/" style="text-decoration:none;color:#f47b20;border:2px solid #f47b20;padding:12px;">Donate to SAMBA</a></p>
     <p style="text-align: center;">Chapter of</p>
-    <img src="assets/imbalogo.png" class="imba-logo">
+    <a href="https://www.imba.com/"><img src="assets/imbalogo.png" class="imba-logo"></a>
 </div>
 <div id="info-container">
     <span id="graph-details">&times;</span>
@@ -344,11 +363,13 @@ for (var i = 0; i < head.length; i++){
 
 var map = new mapboxgl.Map({
     container: "map",
-    style: "mapbox://styles/stevec/ck8s5iuc4127n1inzsogz17b3?optimize=true",
+    style: "mapbox://styles/stevec/ck8s5iuc4127n1inzsogz17b3",
     bounds: [[-76.117582,40.587861],[-76.954153,40.150705]],
     dragRotate: false,
     boxZoom: false,
-    accessToken: "pk.eyJ1Ijoic3RldmVjIiwiYSI6ImNrYXp0cmZiMzAxd3UycXF0ZWh5MWtmdXkifQ.zm5r3rXG0royydqKMkQm-g", //"pk.eyJ1Ijoic3RldmVjIiwiYSI6Imc1MHlqRDgifQ.9P1rTpqO9-ODUCB9KXi25A",
+    accessToken: "pk.eyJ1Ijoic3RldmVjIiwiYSI6Imc1MHlqRDgifQ.9P1rTpqO9-ODUCB9KXi25A",
+    //PRODUCTION TOKEN
+    //accessToken: "pk.eyJ1Ijoic3RldmVjIiwiYSI6ImNrYXp0cmZiMzAxd3UycXF0ZWh5MWtmdXkifQ.zm5r3rXG0royydqKMkQm-g",
     hash: true,
     minZoom: 7,
     attributionControl: false
@@ -451,6 +472,41 @@ map.on("load", function() {
         "minzoom": 13,
         "layout": {
             "text-field": "Paxtang Park",
+            "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
+            "text-size": 11,
+            "text-offset": [0,-1.3],
+            "text-optional": true
+        },
+        "paint": {
+            "text-color": "#f47b20",
+            "text-halo-color": "#fff",
+            "text-halo-width": 2
+        }
+    });
+    //SPONSOR
+    map.addSource("sponsor-source", {
+        "type": "geojson",
+        "data": sponsorsData
+    });
+    map.addLayer({
+        "id": "sponsor-layer",
+        "type": "circle",
+        "source": "sponsor-source",
+        //"minzoom": 10,
+        "paint": {
+            "circle-radius": 4.5,
+            "circle-color": "#f47b20",
+            "circle-stroke-color": "#fff",
+            "circle-stroke-width": 1
+        }
+    });
+    map.addLayer({
+        "id": "sponsor-text-layer",
+        "type": "symbol",
+        "source": "sponsor-source",
+        "minzoom": 12.5,
+        "layout": {
+            "text-field": ["get", "NAME"],
             "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
             "text-size": 11,
             "text-offset": [0,-1.3],
@@ -631,6 +687,7 @@ var bboxes = [
     [[-76.6652,40.26289],[-76.6846,40.2546]], //HMC
     [[-76.675283,40.556883],[-76.789441,40.5028]], //Rattling
     [[-76.829649,40.274728],[-76.860611,40.241239]], //Parkway
+    [[-76.527182,40.499576],[-76.54499,40.485485]], //Swatara
     [[-76.430502,40.261758],[-76.467095,40.232087]], //Gov Dick
     [[-76.2322,40.2002],[-76.3811,40.1128]], // Litiz Rock Garden
     [[-76.182844,40.174234],[-76.19124,40.169668]] //Ephrata
@@ -643,8 +700,41 @@ goButtons.forEach(function(item,index){
     });
 });
 
+
+var sponsorList = document.querySelector("#sponsor-list");
+
+sponsorsData.features.forEach(function(item,index){
+    var d = document.createElement("div");
+    d.style.marginBottom = "8px";
+    var name = sponsorsData.features[index].properties.NAME;
+    var link = sponsorsData.features[index].properties.URL;
+    var loc = sponsorsData.features[index].geometry.coordinates;
+    if (index > 0) {
+        var pushpin = document.createElement("img");
+        pushpin.src = "assets/marker.svg";
+        pushpin.style.height = "18px";
+        pushpin.style.marginRight = "8px";
+        pushpin.style.cursor = "pointer";
+        pushpin.addEventListener("click",function(){
+            menuClose();
+            map.flyTo({center: loc, zoom: 14.4});   
+        });
+        d.appendChild(pushpin);
+    }
+    else {
+        var svg = '<svg height="18" width="18" style="margin-right:8px;"><polygon points="9,0 15,18 0,6 18,6 3,18" style="fill:#f47b20;"/></svg>';
+        d.innerHTML = svg;
+    }
+    var aTag = document.createElement("a");
+    aTag.href = link;
+    aTag.innerText = name;
+    d.appendChild(aTag);
+    sponsorList.appendChild(d);
+});
+
 //https://spreadsheets.google.com/feeds/list/1eCT14e36q8i6JAQ0ettSj5i7H1J40QuNR52BC1cQQuY/1/public/values?alt=json
 //https://spreadsheets.google.com/feeds/list/1eCT14e36q8i6JAQ0ettSj5i7H1J40QuNR52BC1cQQuY/1/public/full?alt=json
+/*
 function getOrdinal(n) {
     var s = ["th","st","nd","rd"];
     var v = n%100;
@@ -704,7 +794,7 @@ function getGoogleSheetData(){
     });
 }
 getGoogleSheetData();
-
+*/
 </script>
 </body>
 </html>

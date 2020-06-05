@@ -262,7 +262,7 @@
             </div>
         </div>
         <div class="grid-content">
-            Totaling 8 miles, Swatara State Park's mountain bike trails are a system of 6 looped trails that twist through the woods and hills and are generally considered a good place for introductory skills. These trails are no longer offically maintained by SAMBA, but ties remain close.
+            At over 8 miles, Swatara State Park's mountain bike trails are a system of 6 looped trails that twist through the woods and hills and are generally considered a good place for introductory skills. These trails are no longer offically maintained by SAMBA, but ties remain close.
         </div>
     </div>   
     <div class="accordion">
@@ -367,9 +367,7 @@ var map = new mapboxgl.Map({
     bounds: [[-76.117582,40.587861],[-76.954153,40.150705]],
     dragRotate: false,
     boxZoom: false,
-    accessToken: "pk.eyJ1Ijoic3RldmVjIiwiYSI6Imc1MHlqRDgifQ.9P1rTpqO9-ODUCB9KXi25A",
-    //PRODUCTION TOKEN
-    //accessToken: "pk.eyJ1Ijoic3RldmVjIiwiYSI6ImNrYXp0cmZiMzAxd3UycXF0ZWh5MWtmdXkifQ.zm5r3rXG0royydqKMkQm-g",
+    accessToken: "pk.eyJ1Ijoic3RldmVjIiwiYSI6ImNrYXp0cmZiMzAxd3UycXF0ZWh5MWtmdXkifQ.zm5r3rXG0royydqKMkQm-g",
     hash: true,
     minZoom: 7,
     attributionControl: false
@@ -702,7 +700,6 @@ goButtons.forEach(function(item,index){
 
 
 var sponsorList = document.querySelector("#sponsor-list");
-
 sponsorsData.features.forEach(function(item,index){
     var d = document.createElement("div");
     d.style.marginBottom = "8px";
@@ -712,8 +709,9 @@ sponsorsData.features.forEach(function(item,index){
     if (index > 0) {
         var pushpin = document.createElement("img");
         pushpin.src = "assets/marker.svg";
-        pushpin.style.height = "18px";
+        pushpin.style.height = "22px";
         pushpin.style.marginRight = "8px";
+        pushpin.style.verticalAlign = "middle";
         pushpin.style.cursor = "pointer";
         pushpin.addEventListener("click",function(){
             menuClose();
@@ -722,7 +720,7 @@ sponsorsData.features.forEach(function(item,index){
         d.appendChild(pushpin);
     }
     else {
-        var svg = '<svg height="18" width="18" style="margin-right:8px;"><polygon points="9,0 15,18 0,6 18,6 3,18" style="fill:#f47b20;"/></svg>';
+        var svg = '<svg height="22" width="22" style="margin-right:12px;vertical-align:middle;"><polygon points="11,0 19,22 0,7 22,7 3,22" style="fill:#f47b20;"/></svg>';
         d.innerHTML = svg;
     }
     var aTag = document.createElement("a");

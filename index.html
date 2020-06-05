@@ -702,7 +702,7 @@ goButtons.forEach(function(item,index){
 var sponsorList = document.querySelector("#sponsor-list");
 sponsorsData.features.forEach(function(item,index){
     var d = document.createElement("div");
-    d.style.marginBottom = "8px";
+    d.style.marginBottom = "10px";
     var name = sponsorsData.features[index].properties.NAME;
     var link = sponsorsData.features[index].properties.URL;
     var loc = sponsorsData.features[index].geometry.coordinates;
@@ -710,7 +710,7 @@ sponsorsData.features.forEach(function(item,index){
         var pushpin = document.createElement("img");
         pushpin.src = "assets/marker.svg";
         pushpin.style.height = "22px";
-        pushpin.style.marginRight = "8px";
+        pushpin.style.marginRight = "12px";
         pushpin.style.verticalAlign = "middle";
         pushpin.style.cursor = "pointer";
         pushpin.addEventListener("click",function(){

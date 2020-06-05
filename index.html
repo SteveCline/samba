@@ -236,7 +236,7 @@
             </div>
         </div>
         <div class="grid-content">
-            The Rattling Creek trail network, awarded IMBA Epic staus in 2012, covers over 20+ miles of rocky challenging classic east coast singletrack terrain, as well as miles of tamer snowmobile trails and gravel forest roads. The trail network encompasses trails on the Weiser State Forest Haldeman Tract and on Lykens Borough property. Please remember to always wear fluorescent orange during hunting season. Hunting is permitted 7 days a week during hunting seasons.
+            The Rattling Creek trail network, awarded IMBA Epic staus in 2012, covers over 20+ miles of rocky challenging classic east coast singletrack terrain, as well as miles of tamer snowmobile trails and gravel forest roads. The trail network encompasses trails on the Weiser State Forest Haldeman Tract and on Lykens Borough property. This trail system has no cell phone coverage. Please remember to always wear fluorescent orange during hunting season. Hunting is permitted 7 days a week during hunting seasons.
         </div>
     </div>
     <div class="accordion">
@@ -278,7 +278,7 @@
             Officially named the "Clarence Schock Memorial Park at Governor Dick", the park is located in Mount Gretna. The park offers 10 miles of trail open to bikes. Signs are clearly marked to indicate which trails are open to bikes and which are not. 
         </div>
     </div>
-    <div class="accordion">
+    <!--<div class="accordion">
         <div class="grid-container">
             <div class="grid-item head">
                 Litiz Rock Garden
@@ -290,7 +290,7 @@
         <div class="grid-content">
             Something here.
         </div>
-    </div>
+    </div>-->
     <div class="accordion">
         <div class="grid-container">
             <div class="grid-item head">
@@ -302,6 +302,19 @@
         </div>
         <div class="grid-content">
             This bike park is a partnership between SAMBA, Ephrata Borough, Mainspring of Ephrata, Green Mountain Cyclery, and local brewers at St Boniface Craft Brewing, Black Forest Brewing, and Pour Man Brewing Company. The park consists of a beginner trail and intermediate trail totaling 1.5 miles, a pump track, balance bike track for the little ones, two bridges, dirt jumps, and three skills areas. 
+        </div>
+    </div>
+        <div class="accordion">
+        <div class="grid-container">
+            <div class="grid-item head">
+                Mechanicsburg Loop
+            </div>
+            <div class="grid-item go">
+                Go <svg height="12" width="8"><polyline points="2,2 6,6 2,10" stroke="#f47b20" stroke-width="2" fill="none" stroke-linecap="round" /></svg>
+            </div>
+        </div>
+        <div class="grid-content">
+            The Mechanicsburg Area Senior High School (MASH) mountain bike trail loop is just over a half mile long and used by the school's team.
         </div>
     </div>
     
@@ -687,9 +700,11 @@ var bboxes = [
     [[-76.829649,40.274728],[-76.860611,40.241239]], //Parkway
     [[-76.527182,40.499576],[-76.54499,40.485485]], //Swatara
     [[-76.430502,40.261758],[-76.467095,40.232087]], //Gov Dick
-    [[-76.2322,40.2002],[-76.3811,40.1128]], // Litiz Rock Garden
-    [[-76.182844,40.174234],[-76.19124,40.169668]] //Ephrata
+    //[[-76.2322,40.2002],[-76.3811,40.1128]], // Litiz Rock Garden
+    [[-76.182844,40.174234],[-76.19124,40.169668]], //Ephrata
+    [[-77.016461,40.202788],[-77.019392,40.201449]] //MASH
 ];
+
 var goButtons = document.querySelectorAll(".grid-item.go");
 goButtons.forEach(function(item,index){
     goButtons[index].addEventListener("click",function(){
@@ -697,7 +712,6 @@ goButtons.forEach(function(item,index){
         map.fitBounds(bboxes[index]);   
     });
 });
-
 
 var sponsorList = document.querySelector("#sponsor-list");
 sponsorsData.features.forEach(function(item,index){

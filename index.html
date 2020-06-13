@@ -721,27 +721,30 @@ sponsorsData.features.forEach(function(item,index){
     var name = sponsorsData.features[index].properties.NAME;
     var link = sponsorsData.features[index].properties.URL;
     var loc = sponsorsData.features[index].geometry.coordinates;
-    if (index > 0) {
-        var pushpin = document.createElement("img");
-        pushpin.src = "assets/marker.svg";
-        pushpin.style.height = "22px";
-        pushpin.style.marginRight = "12px";
-        pushpin.style.verticalAlign = "middle";
-        pushpin.style.cursor = "pointer";
-        pushpin.addEventListener("click",function(){
-            menuClose();
-            map.flyTo({center: loc, zoom: 14.4});   
-        });
-        d.appendChild(pushpin);
+    var len = sponsorsData.features.length - 1;
+    if (index != len){
+        if (index > 0) {
+            var pushpin = document.createElement("img");
+            pushpin.src = "assets/marker.svg";
+            pushpin.style.height = "22px";
+            pushpin.style.marginRight = "12px";
+            pushpin.style.verticalAlign = "middle";
+            pushpin.style.cursor = "pointer";
+            pushpin.addEventListener("click",function(){
+                menuClose();
+                map.flyTo({center: loc, zoom: 14.4});   
+            });
+            d.appendChild(pushpin);
+        }
+        else {
+            var svg = '<svg height="22" width="22" style="margin-right:12px;vertical-align:middle;"><polygon points="11,0 19,22 0,7 22,7 3,22" style="fill:#f47b20;"/></svg>';
+            d.innerHTML = svg;
+        }
+        var aTag = document.createElement("a");
+        aTag.href = link;
+        aTag.innerText = name;
+        d.appendChild(aTag);
     }
-    else {
-        var svg = '<svg height="22" width="22" style="margin-right:12px;vertical-align:middle;"><polygon points="11,0 19,22 0,7 22,7 3,22" style="fill:#f47b20;"/></svg>';
-        d.innerHTML = svg;
-    }
-    var aTag = document.createElement("a");
-    aTag.href = link;
-    aTag.innerText = name;
-    d.appendChild(aTag);
     sponsorList.appendChild(d);
 });
 

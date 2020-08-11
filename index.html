@@ -594,6 +594,39 @@ map.on("load", function() {
             "text-color": "#fff"
         }
     });
+    map.addSource("bash-source", {
+        "type": "geojson",
+        "data": {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[-76.780274,40.538195]}}]}
+    });
+    map.addLayer({
+        "id": "bash-icon-layer",
+        "type": "symbol",
+        "source": "bash-source",
+        "layout": {
+            "icon-image": "bicycle-15",
+            "icon-allow-overlap": true
+        },
+        "paint": {
+            "icon-color": "#f47b20"
+        }
+    });
+    map.addLayer({
+        "id": "bash-text-layer",
+        "type": "symbol",
+        "source": "bash-source",
+        "layout": {
+            "text-field": "SAMBA Bash Sept 17-20 2020",
+            "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
+            "text-size": 12,
+            "text-offset": [0,-1.8],
+            "text-optional": true
+        },
+        "paint": {
+            "text-color": "#f47b20",
+            "text-halo-color": "#fff",
+            "text-halo-width": 2
+        }
+    });
     map.addSource("start-pnt-source", {
         "type": "geojson",
         "data": null

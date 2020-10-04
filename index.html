@@ -279,19 +279,6 @@
             Officially named the "Clarence Schock Memorial Park at Governor Dick", the park is located in Mount Gretna. The park offers 10 miles of trail open to bikes. Signs are clearly marked to indicate which trails are open to bikes and which are not. 
         </div>
     </div>
-    <!--<div class="accordion">
-        <div class="grid-container">
-            <div class="grid-item head">
-                Litiz Rock Garden
-            </div>
-            <div class="grid-item go">
-                Go <svg height="12" width="8"><polyline points="2,2 6,6 2,10" stroke="#f47b20" stroke-width="2" fill="none" stroke-linecap="round" /></svg>
-            </div>
-        </div>
-        <div class="grid-content">
-            Something here.
-        </div>
-    </div>-->
     <div class="accordion">
         <div class="grid-container">
             <div class="grid-item head">
@@ -305,7 +292,20 @@
             This bike park is a partnership between SAMBA, Ephrata Borough, Mainspring of Ephrata, Green Mountain Cyclery, and local brewers at St Boniface Craft Brewing, Black Forest Brewing, and Pour Man Brewing Company. The park consists of a beginner trail and intermediate trail totaling 1.5 miles, a pump track, balance bike track for the little ones, two bridges, dirt jumps, and three skills areas. 
         </div>
     </div>
-        <div class="accordion">
+    <div class="accordion">
+        <div class="grid-container">
+            <div class="grid-item head">
+                Coleman Park Bicycle Playground
+            </div>
+            <div class="grid-item go">
+                Go <svg height="12" width="8"><polyline points="2,2 6,6 2,10" stroke="#f47b20" stroke-width="2" fill="none" stroke-linecap="round" /></svg>
+            </div>
+        </div>
+        <div class="grid-content">
+            The Coleman Park Bicycle Playground is a partnership between SAMBA, Lebanon City, Lebanon Valley Bicycle Coalition, and the Community Health Council of Lebanon County. The park consists of a pump track, a jump track, and a balance bike track for the little ones. 
+        </div>
+    </div>
+    <div class="accordion">
         <div class="grid-container">
             <div class="grid-item head">
                 Mechanicsburg Loop
@@ -484,6 +484,41 @@ map.on("load", function() {
         "minzoom": 13,
         "layout": {
             "text-field": "Paxtang Park",
+            "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
+            "text-size": 11,
+            "text-offset": [0,-1.3],
+            "text-optional": true
+        },
+        "paint": {
+            "text-color": "#f47b20",
+            "text-halo-color": "#fff",
+            "text-halo-width": 2
+        }
+    });
+    map.addSource("coleman-source", {
+        "type": "geojson",
+        "data": {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[-76.442441,40.349718]}}]}
+    });
+    map.addLayer({
+        "id": "coleman-icon-layer",
+        "type": "symbol",
+        "source": "coleman-source",
+        "minzoom": 13,
+        "layout": {
+            "icon-image": "bicycle-15",
+            "icon-allow-overlap": true
+        },
+        "paint": {
+            "icon-color": "#f47b20"
+        }
+    });
+    map.addLayer({
+        "id": "coleman-text-layer",
+        "type": "symbol",
+        "source": "coleman-source",
+        "minzoom": 13,
+        "layout": {
+            "text-field": "Coleman Park",
             "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
             "text-size": 11,
             "text-offset": [0,-1.3],
@@ -701,8 +736,8 @@ var bboxes = [
     [[-76.829649,40.274728],[-76.860611,40.241239]], //Parkway
     [[-76.527182,40.499576],[-76.54499,40.485485]], //Swatara
     [[-76.430502,40.261758],[-76.467095,40.232087]], //Gov Dick
-    //[[-76.2322,40.2002],[-76.3811,40.1128]], // Litiz Rock Garden
     [[-76.182844,40.174234],[-76.19124,40.169668]], //Ephrata
+    [[-76.438526,40.350858],[-76.443520,40.34862]], //Coleman Park
     [[-77.016461,40.202788],[-77.019392,40.201449]] //MASH
 ];
 

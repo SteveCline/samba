@@ -282,6 +282,19 @@
     <div class="accordion">
         <div class="grid-container">
             <div class="grid-item head">
+                Camp Mack
+            </div>
+            <div class="grid-item go">
+                Go <svg height="12" width="8"><polyline points="2,2 6,6 2,10" stroke="#f47b20" stroke-width="2" fill="none" stroke-linecap="round" /></svg>
+            </div>
+        </div>
+        <div class="grid-content">
+            Totaling 16 miles of trails and forest roads, the J. Edward Mack Scout Reservation is a private property owned and operated by the <a href="http://padutchbsa.org/">PA Dutch Council of the Boy Scouts of America</a>. SAMBA maintains a volunteer trail stewardship agreement with the PA Dutch Council to allow for mountain biking on this 1000+ acre property. It will be closed to mountain biking during the hunting season.
+        </div>
+    </div>
+    <div class="accordion">
+        <div class="grid-container">
+            <div class="grid-item head">
                 Ephrata Bike Park at Heatherwood
             </div>
             <div class="grid-item go">
@@ -326,7 +339,7 @@
     <div id="sponsor-list"></div>
     <h1>Mission</h1>
     <p>Susquehanna Area Mountain Bike Association's mission is to advocate for mountain bike trail access by creating positive relationships and partnerships with area land owners and organizations. We provide information, education and support to Central Pennsylvania mountain bike riders.</p>
-    <p style="text-align: center;margin: 32px 0;"><a href="http://sambabiker.com/samba/donate/" style="text-decoration:none;color:#f47b20;border:2px solid #f47b20;padding:12px;">Donate to SAMBA</a></p>
+    <p style="text-align: center;margin: 32px 0;"><a href="https://sambabiker.com/donate/" style="text-decoration:none;color:#f47b20;border:2px solid #f47b20;padding:12px;">Donate to SAMBA</a></p>
     <p style="text-align: center;">Chapter of</p>
     <a href="https://www.imba.com/"><img src="assets/imbalogo.png" class="imba-logo"></a>
 </div>
@@ -407,6 +420,36 @@ map.on("load", function() {
         "paint": {
             "fill-color": "#f1c40f",
             "fill-opacity": 0.6,
+        }
+    });
+    map.addSource("restricted-source", {
+        "type": "geojson",
+        "data": restrictedData
+    });
+    map.addLayer({
+        "id": "restricted-layer",
+        "type": "fill",
+        "source": "restricted-source",
+        "minzoom": 12,
+        "paint": {
+            "fill-color": "#ff0000",
+            "fill-opacity": 0.4,
+        }
+    });
+    map.addLayer({
+        "id": "restricted-text-layer",
+        "type": "symbol",
+        "source": "restricted-source",
+        "minzoom": 13,
+        "layout": {
+            "text-field": "Restricted Area",
+            "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
+            "text-size": 11,
+        },
+        "paint": {
+            "text-color": "#fff",
+            "text-halo-color": "#ff0000",
+            "text-halo-width": 2
         }
     });
     map.addLayer({
@@ -503,7 +546,6 @@ map.on("load", function() {
         "id": "coleman-icon-layer",
         "type": "symbol",
         "source": "coleman-source",
-        "minzoom": 13,
         "layout": {
             "icon-image": "bicycle-15",
             "icon-allow-overlap": true
@@ -516,7 +558,6 @@ map.on("load", function() {
         "id": "coleman-text-layer",
         "type": "symbol",
         "source": "coleman-source",
-        "minzoom": 13,
         "layout": {
             "text-field": "Coleman Park",
             "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
@@ -539,7 +580,6 @@ map.on("load", function() {
         "id": "sponsor-layer",
         "type": "circle",
         "source": "sponsor-source",
-        //"minzoom": 10,
         "paint": {
             "circle-radius": 4.5,
             "circle-color": "#f47b20",
@@ -736,6 +776,7 @@ var bboxes = [
     [[-76.829649,40.274728],[-76.860611,40.241239]], //Parkway
     [[-76.527182,40.499576],[-76.54499,40.485485]], //Swatara
     [[-76.430502,40.261758],[-76.467095,40.232087]], //Gov Dick
+    [[-76.302786,40.263615],[-76.33813,40.237631]], //Camp Mack
     [[-76.182844,40.174234],[-76.19124,40.169668]], //Ephrata
     [[-76.438526,40.350858],[-76.443520,40.34862]], //Coleman Park
     [[-77.016461,40.202788],[-77.019392,40.201449]] //MASH

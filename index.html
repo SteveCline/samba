@@ -161,33 +161,19 @@
         margin-right: auto;
         width: 156px;
         margin-bottom: 30px;
-    }    
-    .date-list {
-        display: grid;
-        grid-template-columns: 44px auto;
-        font-size: 16px;
+    }
+    .event-container {
         margin-bottom: 12px;
-    }
-    .date-cal {
-        border: 2px solid #f47b20;
-        width: 40px;
-        text-align: center;
-        
-    }
-    .month {
-        background: #f47b20;
-        color: #111;
-        font-weight: bold;
-    }
-    .date-loc {
-        margin-left: 8px;
-        margin-top: 2px;
     }
     .date-time {
         font-style: italic;
-        font-size: 0.9em;
-        margin-top: 2px;
-        color: #78866b;
+        font-size: 0.8em;
+        color: #f47b20;
+    }
+    .pushpin {
+        height: 34px;
+        cursor: pointer;
+        margin-right: 12px;
     }
     .mapboxgl-ctrl button:not(:disabled):hover{
         border-radius: 50%;
@@ -335,9 +321,8 @@
         </div>
     </div>
     
-    <h1>Ride Schedule</h1>
-    <p>*Due to COVID-19 group rides are temporarily suspended. When group rides return, they will be posted here.</p>
-    <!--<div id="ride-schedule"></div>-->
+    <h1>Events</h1>
+    <div id="event-schedule"></div>
     <h1>Sponsors</h1>
     <div id="sponsor-list"></div>
     <h1>Mission</h1>
@@ -366,6 +351,8 @@ menuIcon.addEventListener("click", function(e){
 });
 var infoContainer = document.querySelector("#info-container");
 var infoContainerTitle = document.querySelector("#info-container-title");
+var eventListContainer = document.querySelector("#event-schedule");
+
 
 function removeStuff(){
     infoContainer.classList.remove("show");
@@ -826,70 +813,41 @@ sponsorsData.features.forEach(function(item,index){
     }
     sponsorList.appendChild(d);
 });
-
-//https://spreadsheets.google.com/feeds/list/1eCT14e36q8i6JAQ0ettSj5i7H1J40QuNR52BC1cQQuY/1/public/values?alt=json
-//https://spreadsheets.google.com/feeds/list/1eCT14e36q8i6JAQ0ettSj5i7H1J40QuNR52BC1cQQuY/1/public/full?alt=json
-/*
-function getOrdinal(n) {
-    var s = ["th","st","nd","rd"];
-    var v = n%100;
-    return n + (s[(v-20)%10]||s[v]||s[0]);
- }
-
-function createDateItem(date,place,time){ 
-    var day = date.getDay();
-    var numberDate = date.getDate();
-    var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-    var numberMonth = date.getMonth();
-    var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    var monthLong = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    var dateList = document.createElement("div");
-    dateList.classList.add("date-list");
-    var dateCal = document.createElement("div");
-    dateCal.classList.add("date-cal");
-    dateCal.innerHTML = "<div>" + numberDate + "</div><div class='month'>" + month[numberMonth] + "</div>";
-    var dateLoc = document.createElement("div");
-    dateLoc.classList.add("date-loc");
-    dateLoc.innerHTML = "<div>" + place + "</div><div class='date-time'>" + weekday[day] +  " " + monthLong[numberMonth] + " " + getOrdinal(numberDate) + " at " + time + "</div>";
-    dateList.appendChild(dateCal);
-    dateList.appendChild(dateLoc);
-    return dateList;
-}        
-
-function listRides(root) {
-    var entries = root.feed.entry;
-    var listContainer = document.querySelector("#ride-schedule");
-    for (var i = 0; i < entries.length; i++) {
-        var entry = entries[i];
-        var evtDate = new Date(entry.gsx$date.$t);
-        var now = new Date();
-        var today = new Date((now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear());
-        if (evtDate >= today){
-            var item = createDateItem(evtDate,entry.gsx$place.$t,entry.gsx$time.$t);
-            listContainer.appendChild(item);
-        }
-    }
+      
+function cleanDate(date){
+    var options = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+    return date.toLocaleDateString(undefined, options) + " at " + date.toLocaleTimeString("en-US", {timeStyle: "short"});
 }
 
-function getGoogleSheetData(){
-    var url = "https://spreadsheets.google.com/feeds/list/1eCT14e36q8i6JAQ0ettSj5i7H1J40QuNR52BC1cQQuY/1/public/full?alt=json";
+function createEventItem(item){
+    var event = document.createElement("div");
+    event.classList.add("event-container");
+    var date = new Date(item.start_time);
+    event.innerHTML = "<a target='_blank' href='https://www.facebook.com/events/" + item.id + "'>" + item.name + "</a><br><span class='date-time'>" + cleanDate(date) + "</span>";
+    eventListContainer.append(event);
+}
+
+function getFacebookEvents(){
+    var timeStamp = Math.round((new Date()).getTime() / 1000);
+    var url = "https://graph.facebook.com/452608435516843/events?fields=name,start_time&access_token=EAAKGWofDHWYBABGThx8QZCaP9Pz94s5HYqhOLxCZBLs5tQPPR3q86h2TO611Awo8OaKonFlMZCYX7IvDSvaVq7FwHABZAMfRRcgTL6bkSNQxLDaTohlH2e4gWtxLablhehJ3PTc5jpin2ptg2M1ZAbX8ZCdRZBd2UvWUwZBRzxfiAWj78MTO55CjZCOcEXRDqvwMZD&since=" + timeStamp;
     fetch(url)
     .then(function(response){
         return response.json();
     })
     .then(function(data){
-        listRides(data);
+        var events = data.data.reverse();
+        events.forEach(function(item){
+            createEventItem(item);
+        });
     })
-    .catch(function(error){
-        var listContainer = document.querySelector("#ride-schedule");
+    .catch(function(error){ 
         var p = document.createElement("p");
         p.style.color = "#f47b20";
-        p.innerText = "Ride Schedule not available";
-        listContainer.appendChild(p);
+        p.innerText = "Events not available";
+        eventListContainer.append(p);
     });
 }
-getGoogleSheetData();
-*/
+getFacebookEvents();
 </script>
 </body>
 </html>

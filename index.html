@@ -320,9 +320,6 @@
             The Mechanicsburg Area Senior High School (MASH) mountain bike trail loop is just over a half mile long and used by the school's team.
         </div>
     </div>
-    
-    <h1>Events</h1>
-    <div id="event-schedule"></div>
     <h1>Sponsors</h1>
     <div id="sponsor-list"></div>
     <h1>Mission</h1>
@@ -427,22 +424,6 @@ map.on("load", function() {
         }
     });
     map.addLayer({
-        "id": "restricted-text-layer",
-        "type": "symbol",
-        "source": "restricted-source",
-        "minzoom": 13,
-        "layout": {
-            "text-field": "Restricted Area",
-            "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
-            "text-size": 11,
-        },
-        "paint": {
-            "text-color": "#fff",
-            "text-halo-color": "#f47b20",
-            "text-halo-width": 2
-        }
-    });
-    map.addLayer({
         "id": "trails-layer-select",
         "type": "line",
         "source": "trails-source",
@@ -493,6 +474,44 @@ map.on("load", function() {
             "text-color": ["match",["get", "DIFFICULTY"],["Advanced"],"#111",["Intermediate"],"#06c",["Beginner"],"#199119",["Other"],"#8e44ad",["Closed"],"#ff0000","#ccc"]
         }
     });
+    map.addLayer({
+        "id": "restricted-text-layer",
+        "type": "symbol",
+        "source": "restricted-source",
+        "minzoom": 13,
+        "layout": {
+            "text-field": ["get", "NAME"],
+            "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
+            "text-size": 11,
+        },
+        "paint": {
+            "text-color": "#fff",
+            "text-halo-color": "#f47b20",
+            "text-halo-width": 2
+        }
+    });
+    //------------
+    map.addSource("hunting-source", {
+        "type": "geojson",
+        "data": {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[-76.334904,40.254443]}}]}
+    });
+    map.addLayer({
+        "id": "hunting-notice",
+        "type": "symbol",
+        "source": "hunting-source",
+        "minzoom": 12,
+        "layout": {
+            "text-field": "Closed to All Public Use\nOctober 2, 2021 - January 17, 2022\nMonday - Saturday\nand Sunday November 14, 21 and 28",
+            "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
+            "text-size": 11,
+        },
+        "paint": {
+            "text-color": "#000",
+            "text-halo-color": "#fff",
+            "text-halo-width": 2
+        }
+    });
+    //------------
     map.addSource("pax-source", {
         "type": "geojson",
         "data": {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[-76.831915,40.256211]}}]}
@@ -813,7 +832,7 @@ sponsorsData.features.forEach(function(item,index){
     }
     sponsorList.appendChild(d);
 });
-      
+/*     
 function cleanDate(date){
     var options = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
     return date.toLocaleDateString(undefined, options) + " at " + date.toLocaleTimeString("en-US", {timeStyle: "short"});
@@ -829,7 +848,8 @@ function createEventItem(item){
 
 function getFacebookEvents(){
     var timeStamp = Math.round((new Date()).getTime() / 1000);
-    var url = "https://graph.facebook.com/452608435516843/events?fields=name,start_time&access_token=EAAKGWofDHWYBABGThx8QZCaP9Pz94s5HYqhOLxCZBLs5tQPPR3q86h2TO611Awo8OaKonFlMZCYX7IvDSvaVq7FwHABZAMfRRcgTL6bkSNQxLDaTohlH2e4gWtxLablhehJ3PTc5jpin2ptg2M1ZAbX8ZCdRZBd2UvWUwZBRzxfiAWj78MTO55CjZCOcEXRDqvwMZD&since=" + timeStamp;
+    var token = "EAANcW2CaS44BAGQKUhCxIY7tDkZAUxTDYPHABFQuT2xSWQJEqqylPuZAplZAgWbwKUlB8v7N2Lu6LKLCCkON6w7ZC5VvcRfdkHVCHZBkSznbGsIaVcpPGEfSdOZBG5HDhbT8KmQIMMCgemb2cw10o9St9OonY7hZC7k9d0ASZB1U383wu1r99uDSsUlh8oLHcOZBGZCZCn2m7BXoaz184TZB0klFaGSaN9cHLUfLXCWlEKrZCTXla92A0hiUQ";
+    var url = "https://graph.facebook.com/452608435516843/events?fields=name,start_time&access_token=" + token + "&since=" + timeStamp;
     fetch(url)
     .then(function(response){
         return response.json();
@@ -841,6 +861,7 @@ function getFacebookEvents(){
         });
     })
     .catch(function(error){ 
+        console.log(error);
         var p = document.createElement("p");
         p.style.color = "#f47b20";
         p.innerText = "Events not available";
@@ -848,6 +869,12 @@ function getFacebookEvents(){
     });
 }
 getFacebookEvents();
+*/
+
+
+
+
+
 </script>
 </body>
 </html>

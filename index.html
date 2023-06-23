@@ -834,6 +834,7 @@ map.on("load", function() {
         menu.classList.remove("show");
         map.setFilter("trails-layer-highlight", ["==","OBJECTID", p.OBJECTID]);
     });
+    getGoogleSheetData();
 });
 
 function getIcon(d){
@@ -1002,12 +1003,6 @@ function getGoogleSheetData(){
         eventListContainer.appendChild(p);
     });
 }
-getGoogleSheetData();
-
-
-
-
-
 </script>
 </body>
 </html>

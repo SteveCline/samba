@@ -11,7 +11,9 @@
 <meta property="og:image:width" content="1024">
 <meta property="og:image:height" content="512">
 <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" /> 
+<!-- <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />  -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+
 <style>  
 	body { margin: 0; padding: 0; font-family: Arial,sans-serif; }
     h1 { font-weight: normal; font-size: 24px; }
@@ -188,6 +190,34 @@
     .mapboxgl-ctrl button.mapboxgl-ctrl-compass .mapboxgl-ctrl-icon {
         background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='29' height='29' viewBox='0 0 29 29' xmlns='http://www.w3.org/2000/svg' fill='%23f00'%3E%3Cpath d='M10.5 14l4-8 4 8h-8z'/%3E%3Cpath d='M10.5 16l4 8 4-8h-8z' fill='%23ccc'/%3E%3C/svg%3E");
     }
+
+    .date-list {
+        display: grid;
+        grid-template-columns: 42px auto;
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    .date-cal {
+        border: 2px solid #f47b20;
+        text-align: center;
+        cursor: pointer;
+    }
+    .month {
+        background: #f47b20;
+        color: #111;
+        font-weight: bold;
+    }
+    .date-loc {
+        margin-left: 8px;
+        margin-top: 2px;
+    }
+    .date-time {
+        font-style: italic;
+        font-size: 0.9em;
+        margin-top: 2px;
+        color: #78866b;
+    }
+
 </style>
 </head>
 <body>
@@ -333,6 +363,9 @@
             The Mechanicsburg Area Senior High School (MASH) mountain bike trail loop is just over a half mile long and used by the school's team.
         </div>
     </div>
+    <h1>Events</h1>
+    <p>*Click calender to map event location</p>
+    <div id="event-schedule"></div>
     <h1>Sponsors</h1>
     <div id="sponsor-list"></div>
     <h1>Mission</h1>
@@ -347,7 +380,8 @@
     <div id="graph"></div>  
 </div>    
 <div id="map"></div>
-<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+<!-- <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script> -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 <script src="assets/turf.js"></script>
 <script src="assets/chart.js"></script>
 <script src="assets/data.js"></script>
@@ -691,6 +725,39 @@ map.on("load", function() {
             "text-color": "#fff"
         }
     });
+    map.addSource("events-source", {
+        "type": "geojson",
+        "data": null
+    });
+    map.addLayer({
+        "id": "events-layer",
+        "type": "circle",
+        "source": "events-source",
+        "paint": {
+            "circle-radius": 4,
+            "circle-color": "#fff",
+            "circle-stroke-color": "#f47b20",
+            "circle-stroke-width": 3
+        }
+    });
+    map.addLayer({
+        "id": "events-text-layer",
+        "type": "symbol",
+        "source": "events-source",
+        "minzoom": 12.5,
+        "layout": {
+            "text-field": ["format",["get", "TITLE"],"\n",["get", "DATE"]],
+            "text-font": ["Source Sans Pro SemiBold","Source Sans Pro Regular"],
+            "text-size": 11,
+            "text-offset": [0,-1.8],
+            "text-max-width": 25
+        },
+        "paint": {
+            "text-color": "#f47b20",
+            "text-halo-color": "#fff",
+            "text-halo-width": 2
+        }
+    });
     map.addSource("start-pnt-source", {
         "type": "geojson",
         "data": null
@@ -846,44 +913,96 @@ sponsorsData.features.forEach(function(item,index){
     }
     sponsorList.appendChild(d);
 });
-/*     
-function cleanDate(date){
-    var options = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
-    return date.toLocaleDateString(undefined, options) + " at " + date.toLocaleTimeString("en-US", {timeStyle: "short"});
+
+function getOrdinal(n) {
+    var s = ["th","st","nd","rd"];
+    var v = n%100;
+    return n + (s[(v-20)%10]||s[v]||s[0]);
+ }
+
+function createDateItem(date,place,time,url,type,coordinates){ 
+    var day = date.getDay();
+    var numberDate = date.getDate();
+    var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var numberMonth = date.getMonth();
+    var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    var monthLong = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    var dateList = document.createElement("div");
+    dateList.classList.add("date-list");
+    var dateCal = document.createElement("div");
+    dateCal.title = "click to zoom to event location"
+    dateCal.classList.add("date-cal");
+    dateCal.innerHTML = "<div>" + numberDate + "</div><div class='month'>" + month[numberMonth] + "</div>";
+    dateCal.addEventListener("click", function(e){
+        menuClose();
+        map.flyTo({center: coordinates, zoom: 14.4});
+    });
+    var dateLoc = document.createElement("div");
+    dateLoc.classList.add("date-loc");
+    if (url.length > 0){
+        dateLoc.innerHTML = "<div><a href='" + url + "' target='_blank'>" + place + "</a></div><div class='date-time'>" + weekday[day] +  " " + monthLong[numberMonth] + " " + getOrdinal(numberDate) + " at " + time + "</div>";
+    }
+    else {
+        dateLoc.innerHTML = "<div>" + place + "</div><div class='date-time'>" + weekday[day] +  " " + monthLong[numberMonth] + " " + getOrdinal(numberDate) + " at " + time + "</div>";
+    }
+    dateList.appendChild(dateCal);
+    dateList.appendChild(dateLoc);
+    return dateList;
+}        
+
+function listRides(e) {
+    var features = [];
+    var geojson = {"type": "FeatureCollection","features":features};
+    for (var i = 0; i < e.length; i++) {
+        var date = new Date(e[i].DATE);
+        var now = new Date();
+        var today = new Date((now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear());
+        if (date >= today){
+            var item = createDateItem(date,e[i].TITLE,e[i].TIME,e[i].URL,e[i].TYPE,[e[i].LONGITUDE,e[i].LATITUDE]);
+            eventListContainer.appendChild(item);
+            var feature = {
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [e[i].LONGITUDE,e[i].LATITUDE]},
+                "properties": {DATE:e[i].DATE,TIME:e[i].TIME,TITLE:e[i].TITLE,TYPE:e[i].TYPE,URL:e[i].URL}
+            }
+            features.push(feature);
+        }
+    }
+    map.getSource("events-source").setData(geojson);
 }
 
-function createEventItem(item){
-    var event = document.createElement("div");
-    event.classList.add("event-container");
-    var date = new Date(item.start_time);
-    event.innerHTML = "<a target='_blank' href='https://www.facebook.com/events/" + item.id + "'>" + item.name + "</a><br><span class='date-time'>" + cleanDate(date) + "</span>";
-    eventListContainer.append(event);
+function csvJSON(csv){
+    var lines = csv.split("\n");
+    var a = [];
+    var headers = lines[0].split(",");
+    for(var i=1;i<lines.length;i++){
+        var obj = {};
+        var currentline = lines[i].split(",");
+        for(var j=0;j<headers.length;j++){
+            obj[headers[j]] = currentline[j];
+        }
+        a.push(obj);
+    }
+    return a;
 }
 
-function getFacebookEvents(){
-    var timeStamp = Math.round((new Date()).getTime() / 1000);
-    var token = "EAANcW2CaS44BAGQKUhCxIY7tDkZAUxTDYPHABFQuT2xSWQJEqqylPuZAplZAgWbwKUlB8v7N2Lu6LKLCCkON6w7ZC5VvcRfdkHVCHZBkSznbGsIaVcpPGEfSdOZBG5HDhbT8KmQIMMCgemb2cw10o9St9OonY7hZC7k9d0ASZB1U383wu1r99uDSsUlh8oLHcOZBGZCZCn2m7BXoaz184TZB0klFaGSaN9cHLUfLXCWlEKrZCTXla92A0hiUQ";
-    var url = "https://graph.facebook.com/452608435516843/events?fields=name,start_time&access_token=" + token + "&since=" + timeStamp;
+function getGoogleSheetData(){
+    var url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRO1XDHcQh-7jmIYHHms4Di5hGuJbuCtWnWF8INyQ0u_G4I0PNccuQ1GnL77dA-U0TgLJg0vjgaKYVT/pub?output=csv";
     fetch(url)
     .then(function(response){
-        return response.json();
+        return response.text();
     })
     .then(function(data){
-        var events = data.data.reverse();
-        events.forEach(function(item){
-            createEventItem(item);
-        });
+        listRides(csvJSON(data));
     })
-    .catch(function(error){ 
-        console.log(error);
+    .catch(function(error){
         var p = document.createElement("p");
         p.style.color = "#f47b20";
-        p.innerText = "Events not available";
-        eventListContainer.append(p);
+        p.innerText = "Ride Schedule not available";
+        eventListContainer.appendChild(p);
     });
 }
-getFacebookEvents();
-*/
+getGoogleSheetData();
 
 
 

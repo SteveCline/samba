@@ -726,7 +726,7 @@ map.on("load", function() {
             "text-color": "#fff"
         }
     });
-    map.addSource("events-source", {
+    /*map.addSource("events-source", {
         "type": "geojson",
         "data": null
     });
@@ -758,7 +758,7 @@ map.on("load", function() {
             "text-halo-color": "#fff",
             "text-halo-width": 2
         }
-    });
+    });*/
     map.addSource("start-pnt-source", {
         "type": "geojson",
         "data": null
@@ -835,7 +835,7 @@ map.on("load", function() {
         menu.classList.remove("show");
         map.setFilter("trails-layer-highlight", ["==","OBJECTID", p.OBJECTID]);
     });
-    getGoogleSheetData();
+    //getGoogleSheetData();
 });
 
 function getIcon(d){

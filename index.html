@@ -363,9 +363,10 @@
             The Mechanicsburg Area Senior High School (MASH) mountain bike trail loop is just over a half mile long and used by the school's team.
         </div>
     </div>
-    <h1>Events</h1>
+    <!--<h1>Events</h1>
     <p>*Click calendar to map event location</p>
-    <div id="event-schedule"></div>
+    <div id="event-schedule"></div>-->
+    <p style="text-align: center;margin: 32px 0;"><a href="https://www.meetup.com/susquehanna-area-mountain-bike-association-samba/" style="text-decoration:none;color:#f47b20;border:2px solid #f47b20;padding:12px;">Meet Up Events</a></p>
     <h1>Sponsors</h1>
     <div id="sponsor-list"></div>
     <h1>Mission</h1>
@@ -395,7 +396,7 @@ menuIcon.addEventListener("click", function(e){
 });
 var infoContainer = document.querySelector("#info-container");
 var infoContainerTitle = document.querySelector("#info-container-title");
-var eventListContainer = document.querySelector("#event-schedule");
+//var eventListContainer = document.querySelector("#event-schedule");
 
 
 function removeStuff(){
@@ -950,7 +951,7 @@ function createDateItem(date,place,time,url,type,coordinates){
     dateList.appendChild(dateLoc);
     return dateList;
 }        
-
+/*
 function listRides(e) {
     var features = [];
     var geojson = {"type": "FeatureCollection","features":features};
@@ -1002,7 +1003,7 @@ function getGoogleSheetData(){
         p.innerText = "Ride Schedule not available";
         eventListContainer.appendChild(p);
     });
-}
+}*/
 </script>
 </body>
 </html>

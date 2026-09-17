@@ -363,14 +363,25 @@
             The Mechanicsburg Area Senior High School (MASH) mountain bike trail loop is just over a half mile long and used by the school's team.
         </div>
     </div>
-    <!--<h1>Events</h1>
-    <p>*Click calendar to map event location</p>
-    <div id="event-schedule"></div>-->
+
+	<div class="accordion">
+        <div class="grid-container">
+            <div class="grid-item head">
+                Marietta Woods Trail System
+            </div>
+            <div class="grid-item go">
+                Go <svg height="12" width="8"><polyline points="2,2 6,6 2,10" stroke="#f47b20" stroke-width="2" fill="none" stroke-linecap="round" /></svg>
+            </div>
+        </div>
+        <div class="grid-content">
+            The Marietta Woods Trail System features two short loop trails and a bicycle playground with a bicycle repair stand.
+        </div>
+    </div>
+	
     <h1>Sponsors</h1>
     <div id="sponsor-list"></div>
     <h1>Mission</h1>
     <p>Susquehanna Area Mountain Bike Association's mission is to advocate for mountain bike trail access by creating positive relationships and partnerships with area land owners and organizations. We provide information, education and support to Central Pennsylvania mountain bike riders.</p>
-    <p style="text-align: center;margin: 32px 0;"><a href="https://www.meetup.com/susquehanna-area-mountain-bike-association-samba/" style="text-decoration:none;color:#f47b20;border:2px solid #f47b20;padding:12px;">Meet Up Events</a></p>
     <p style="text-align: center;margin: 32px 0;"><a href="https://sambabiker.com/donate/" style="text-decoration:none;color:#f47b20;border:2px solid #f47b20;padding:12px;">Donate to SAMBA</a></p>
     <p style="text-align: center;">Chapter of</p>
     <a href="https://www.imba.com/"><img src="assets/imbalogo.png" class="imba-logo"></a>
@@ -871,7 +882,8 @@ var bboxes = [
     [[-76.182844,40.174234],[-76.19124,40.169668]], //Ephrata
     [[-76.435228,40.353086],[-76.450355,40.34753]], //Coleman Park
     [[-76.995128,40.186151],[-76.998821,40.183393]], //Trails and Trees
-    [[-77.016461,40.202788],[-77.019392,40.201449]] //MASH
+    [[-77.016461,40.202788],[-77.019392,40.201449]], //MASH
+	[[-76.526272,40.059424],[-76.5436012,40.0547736]] //Marietta
 ];
 
 var goButtons = document.querySelectorAll(".grid-item.go");
